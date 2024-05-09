@@ -11,8 +11,8 @@ const columns = [
   { key: "firmware", label: "Firmware", sortable: true },
   { key: "flash", label: "Flash", sortable: true },
   { key: "security", label: "Security" },
-  { key: "comments", label: "Kommentare" },
   { key: "currentUserId", label: "Aktueller Nutzer" },
+  { key: "comments", label: "Kommentare" },
 ]
 </script>
 
