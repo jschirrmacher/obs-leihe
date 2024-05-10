@@ -6,6 +6,8 @@ export type OBSDevice = {
   security: string
   comments: string
   rentals: Rental[]
+  currentUserId: string
+  faulty: boolean
 }
 
 export type Rental = {
