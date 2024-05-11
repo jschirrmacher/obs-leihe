@@ -3,7 +3,8 @@ export default defineAppConfig({
     colorMode: { preference: "dark" },
   },
   ui: {
-    primary: 'lime',
-    gray: 'neutral',
-  }
+    primary: "lime",
+    gray: "neutral",
+  },
+  nuxtIcon: {}, // fix type-checkin error
 })
