@@ -1,3 +1,12 @@
+<script setup lang="ts">
+import type { OBSDevice } from "./types"
+
+const devices = useState<OBSDevice[]>("devices")
+await callOnce(
+  async () => (devices.value = await $fetch<OBSDevice[]>("/api/devices")),
+)
+</script>
+
 <template>
   <UContainer>
     <UCard class="mt-10">

@@ -1,25 +1,24 @@
 <script setup lang="ts">
-const items = [
-  { label: "Geräte", content: "Geräte" },
-  { label: "Nutzer", content: "Noch nicht implementiert" },
+type Item = { id: string; label: string; content: string }
+
+const items: Item[] = [
+  { id: "devices", label: "Geräte", content: "Geräte" },
+  { id: "users", label: "Nutzer", content: "Noch nicht implementiert" },
 ]
 
 const route = useRoute()
 const router = useRouter()
 
-const selected = computed({
-  get () {
-    const index = items.findIndex((item) => item.label === route.query.tab)
-    if (index === -1) {
-      return 0
-    }
+const predicate = (item: Item) => item.id === route.query.tab
 
-    return index
+const selected = computed({
+  get: () => Math.max(0, items.findIndex(predicate)),
+  set(value) {
+    router.replace({
+      query: { tab: items[value].id },
+      hash: "#prevent-scroll",
+    })
   },
-  set (value) {
-    // Hash is specified here to prevent the page from scrolling to the top
-    router.replace({ query: { tab: items[value].label }, hash: '#control-the-selected-index' })
-  }
 })
 </script>
 

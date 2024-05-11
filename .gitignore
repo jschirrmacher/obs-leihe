@@ -23,5 +23,5 @@ logs
 .env.*
 !.env.example
 
-# init file
-init.ts
+# create initial data
+/server/api/dev.post.ts

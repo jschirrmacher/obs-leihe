@@ -19,6 +19,7 @@
   "devDependencies": {
     "prettier": "3.2.5",
     "typescript": "5.4.5",
+    "useful-typescript-functions": "4.2.0",
     "vue-tsc": "1.8.27"
   }
 }
