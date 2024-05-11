@@ -5,4 +5,12 @@ export default defineNuxtConfig({
   typescript: {
     typeCheck: true,
   },
+  nitro: {
+    storage: {
+      data: { driver: "fs", base: "/app/.data/kv" },
+    },
+    devStorage: {
+      data: { driver: "fs", base: "./.data/kv" },
+    },
+  },
 })
