@@ -28,53 +28,46 @@ async function saveAndEndEditing() {
   devices.value = devices.value.map((d) => (d.id === result.id ? result : d))
   endEditing()
 }
+
+const open = ref(true)
 </script>
 
 <template>
-  <div class="device-tile">
-    <div class="info">
-      <IdBadge :device="device" />
-      <div>{{ device.currentUserId }}</div>
+  <UModal v-model="open">
+    <div class="device-tile">
+      <div class="info">
+        <div class="device">
+          <IdBadge :device="device" />
+          <UCheckbox v-model="editData.faulty" label="Defekt" />
+        </div>
+
+        {{ device.deviceId }}<br />
+        <div class="small">Code: {{ device.security || "?" }}</div>
+        <UInput v-model="editData.firmware" placeholder="Firmware version" class="input" />
+        <UInput v-model="editData.flash" placeholder="Flash version" class="input" />
+        <UTextarea v-model="editData.comments" placeholder="Zusätzliche Informationen" class="comment"> </UTextarea>
+      </div>
+      <DeviceRentals :rentals="device.rentals" class="history" />
+
+      <div class="buttons">
+        <UButton @click.stop="endEditing">Abbrechen</UButton>
+        <UButton @click.stop="saveAndEndEditing">Speichern</UButton>
+      </div>
     </div>
-
-    <div class="tech-info">
-      {{ device.deviceId }}<br />
-      <div class="small">Code: {{ device.security || "?" }}</div>
-
-      <UInput
-        v-model="editData.firmware"
-        placeholder="Firmware version"
-        class="input"
-      />
-
-      <UInput
-        v-model="editData.flash"
-        placeholder="Flash version"
-        class="input"
-      />
-
-      <UCheckbox v-model="editData.faulty" label="Defekt" />
-    </div>
-
-    <UTextarea
-      v-model="editData.comments"
-      placeholder="Zusätzliche Informationen"
-      class="comment"
-    >
-    </UTextarea>
-
-    <div class="buttons">
-      <UButton @click.stop="endEditing">Abbrechen</UButton>
-      <UButton @click.stop="saveAndEndEditing">Speichern</UButton>
-    </div>
-  </div>
+  </UModal>
 </template>
 
 <style scoped>
 .device-tile {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-areas: "info tech-info" "comment comment" "buttons buttons";
+  grid-template-areas: "info history" "buttons buttons";
+  margin: 1rem;
+}
+.device {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 .info {
   grid-area: info;
@@ -93,8 +86,11 @@ textarea {
 }
 .buttons {
   display: flex;
+  flex-direction: col;
   gap: 5px;
   padding-top: 2rem;
+  justify-self: right;
+  grid-area: buttons;
 }
 .input {
   margin-bottom: 3px;

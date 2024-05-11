@@ -17,7 +17,7 @@ const selectedDeviceId = ref<string>()
         :device="device"
         @unselect="selectedDeviceId = undefined"
       />
-      <DeviceTile v-else :device="device" />
+      <DeviceTile :device="device" />
     </UCard>
   </div>
 </template>
