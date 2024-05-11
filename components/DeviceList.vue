@@ -1,14 +1,23 @@
 <script setup lang="ts">
 import type { OBSDevice } from "~/types"
-import SingleDevice from "./SingleDevice.vue"
 
 const devices = useState<OBSDevice[]>("devices")
+const selectedDeviceId = ref<string>()
 </script>
 
 <template>
   <div class="device-list">
-    <UCard v-for="device in devices" :key="device.id">
-      <SingleDevice :device="device" />
+    <UCard
+      v-for="device in devices"
+      :key="device.id"
+      @click="selectedDeviceId = device.id"
+    >
+      <EditableDeviceTile
+        v-if="device.id === selectedDeviceId"
+        :device="device"
+        @unselect="selectedDeviceId = undefined"
+      />
+      <DeviceTile v-else :device="device" />
     </UCard>
   </div>
 </template>

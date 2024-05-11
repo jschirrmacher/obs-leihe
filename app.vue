@@ -25,3 +25,9 @@ await callOnce(
     </UCard>
   </UContainer>
 </template>
+
+<style scoped>
+h1 {
+  font-size: 24px;
+}
+</style>

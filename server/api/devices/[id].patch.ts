@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     throw new Error("Device not found")
   }
 
-  Object.assign(device, getMutation(device, ["comments"], await readBody(event)))
+  Object.assign(device, getMutation(device, ["comments", "firmware", "flash", "faulty"], await readBody(event)))
   await storage.setItem("devices", devices)
   
   return {

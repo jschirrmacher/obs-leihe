@@ -10,15 +10,11 @@ const route = useRoute()
 const router = useRouter()
 
 const predicate = (item: Item) => item.id === route.query.tab
+const hash = "#prevent-scroll"
 
 const selected = computed({
   get: () => Math.max(0, items.findIndex(predicate)),
-  set(value) {
-    router.replace({
-      query: { tab: items[value].id },
-      hash: "#prevent-scroll",
-    })
-  },
+  set: (value) => router.replace({ query: { tab: items[value].id }, hash }),
 })
 </script>
 
