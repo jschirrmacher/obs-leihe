@@ -19,5 +19,5 @@ const rentals = computed(() =>
 </script>
 
 <template>
-  <UTable :rows="rentals" :columns="columns"> </UTable>
+  <UTable :rows="rentals" :columns="columns" :ui="{ td: { padding: 'px-2 py-2' }, th: { padding: 'px-2 py-2' } }" />
 </template>

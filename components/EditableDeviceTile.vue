@@ -33,7 +33,7 @@ const open = ref(true)
 </script>
 
 <template>
-  <UModal v-model="open">
+  <UModal v-model="open" prevent-close class="custom-modal" :ui="{ width: 'w-full md:max-w-fit' }">
     <div class="device-tile">
       <div class="info">
         <div class="device">
@@ -45,8 +45,8 @@ const open = ref(true)
         <div class="small">Code: {{ device.security || "?" }}</div>
         <UInput v-model="editData.firmware" placeholder="Firmware version" class="input" />
         <UInput v-model="editData.flash" placeholder="Flash version" class="input" />
-        <UTextarea v-model="editData.comments" placeholder="Zusätzliche Informationen" class="comment"> </UTextarea>
       </div>
+      <UTextarea v-model="editData.comments" placeholder="Zusätzliche Informationen" class="comment"> </UTextarea>
       <DeviceRentals :rentals="device.rentals" class="history" />
 
       <div class="buttons">
@@ -60,9 +60,10 @@ const open = ref(true)
 <style scoped>
 .device-tile {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-areas: "info history" "buttons buttons";
+  grid-template-columns: 200px 1fr;
+  grid-template-areas: "info history" "comment comment" "buttons buttons";
   margin: 1rem;
+  gap: 10px;
 }
 .device {
   display: flex;
