@@ -24,6 +24,8 @@ await callOnce(
       <NuxtPage />
     </UCard>
   </UContainer>
+
+  <UNotifications />
 </template>
 
 <style scoped>

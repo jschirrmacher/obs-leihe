@@ -1,0 +1,3 @@
+# copy this file to 'config.yaml' and change the jwtSecret in the copy
+secrets:
+  jwtSecret: "change-this!"

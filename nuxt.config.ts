@@ -6,11 +6,19 @@ export default defineNuxtConfig({
     typeCheck: true,
   },
   nitro: {
+    esbuild: {
+      options: {
+        target: "esnext",
+      },
+    },
     storage: {
       data: { driver: "fs", base: "/app/.data/kv" },
     },
     devStorage: {
       data: { driver: "fs", base: "./.data/kv" },
     },
+  },
+  build: {
+    transpile: ["jsonwebtoken"],
   },
 })
