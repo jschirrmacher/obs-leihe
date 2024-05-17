@@ -1,5 +1,5 @@
 export function parseLocaleDateString(dateString: string, locale: string): string {
-  const pattern = locale === "hu-HU" ? /(\d{4})\.(\d{1,2})\.(\d{1,2})/ : /(\d{1,2})[\.\/-](\d{1,2})[\.\/-](\d{4})/
+  const pattern = locale === "hu-HU" ? /(\d{4})\.(\d{1,2})\.(\d{1,2})/ : /(\d{1,2})[./-](\d{1,2})[./-](\d{4})/
   const match = dateString.match(pattern)
   if (!match) {
     throw new Error(`Invalid date format for locale ${locale}`)

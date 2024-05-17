@@ -47,7 +47,7 @@ async function saveAndEndEditing() {
 
 const open = ref(true)
 
-const validate = (state: State) => {
+const validate = () => {
   const errors = []
   if (returnDate.value && Number.isNaN(returnDate.value.getTime())) {
     errors.push({ path: "returnDate", message: "Falsche Datumsangabe" })
@@ -55,7 +55,7 @@ const validate = (state: State) => {
   return errors
 }
 
-const isValid = computed(() => validate(state.value).length === 0)
+const isValid = computed(() => validate().length === 0)
 </script>
 
 <template>
@@ -73,7 +73,7 @@ const isValid = computed(() => validate(state.value).length === 0)
         <UInput v-model="state.flash" placeholder="Flash version" class="input" />
       </div>
       <UTextarea v-model="state.comments" placeholder="Zusätzliche Informationen" class="comment" />
-      <DeviceRentals :rentals="device.rentals" class="history" v-model:returnDate="returnDate" />
+      <DeviceRentals v-model:returnDate="returnDate" :rentals="device.rentals" class="history" />
 
       <div class="buttons">
         <UButton v-if="!device.currentUserId && device.ready" variant="outline">Verleihen</UButton>
