@@ -15,7 +15,16 @@ export default defineEventHandler(async (event) => {
     throw new Error("Device not found")
   }
 
-  Object.assign(device, getMutation(device, writableFields, await readBody(event)))
+  const change = (await readBody(event)) as Partial<OBSDevice> & { returnDate?: string }
+  Object.assign(device, getMutation(device, writableFields, change))
+
+  if (change.returnDate) {
+    const rental = device.rentals.find((rental) => rental.to === undefined)
+    if (rental) {
+      rental.to = new Date(change.returnDate)
+    }
+  }
+
   await storage.setItem("devices", devices)
 
   return { ...device, currentUserId: device.rentals.find(openRental)?.userId || "" }

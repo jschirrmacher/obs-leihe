@@ -19,6 +19,6 @@ export default defineNuxtConfig({
     },
   },
   build: {
-    transpile: ["jsonwebtoken"],
+    transpile: ["jsonwebtoken", "@vuepic/vue-datepicker"],
   },
 })
