@@ -8,7 +8,7 @@
     "docker:build": "docker compose build",
     "docker:run": "docker compose up",
     "lint": "eslint .",
-    "test": "npm run lint . && npm run build",
+    "test": "npm run lint && npm run build",
     "test:coverage": "npm run test",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
@@ -30,7 +30,7 @@
     "prettier": "3.2.5",
     "typescript": "5.4.5",
     "useful-typescript-functions": "4.2.0",
-    "vue-tsc": "^2.0.19",
+    "vue-tsc": "^1.8.27",
     "yamljs": "0.3.0",
     "yup": "1.4.0"
   }
