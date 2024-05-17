@@ -6,54 +6,82 @@ const emit = defineEmits(["unselect"])
 
 const devices = useState<OBSDevice[]>("devices")
 
-const editData = ref(props.device)
+type State = {
+  firmware: string
+  flash: string
+  comments: string
+  ready: boolean
+  returnDate: string
+}
+const state = ref<State>(getInitialValues())
+const returnDate = ref<Date>()
 
-function setToInitialValues() {
-  editData.value = JSON.parse(JSON.stringify(props.device))
+function getInitialValues() {
+  return {
+    firmware: props.device.firmware,
+    flash: props.device.flash,
+    comments: props.device.comments,
+    ready: props.device.ready,
+    returnDate: "",
+  }
 }
 
-onMounted(setToInitialValues)
-watch(() => props.device, setToInitialValues)
+onMounted(() => (state.value = getInitialValues()))
+watch(
+  () => props.device,
+  () => (state.value = getInitialValues()),
+)
 
 function endEditing() {
-  setToInitialValues()
+  state.value = getInitialValues()
   emit("unselect")
 }
 
 async function saveAndEndEditing() {
-  const result = await $fetch<OBSDevice>("/api/devices/" + props.device.id, {
-    method: "PATCH",
-    body: JSON.stringify(editData.value),
-  })
+  state.value.returnDate = returnDate.value?.toISOString().split("T").at(0) || ""
+  const body = JSON.stringify(state.value)
+  const result = await $fetch<OBSDevice>("/api/devices/" + props.device.id, { method: "PATCH", body })
   devices.value = devices.value.map((d) => (d.id === result.id ? result : d))
   endEditing()
 }
 
 const open = ref(true)
+
+const validate = (state: State) => {
+  const errors = []
+  if (returnDate.value && Number.isNaN(returnDate.value.getTime())) {
+    errors.push({ path: "returnDate", message: "Falsche Datumsangabe" })
+  }
+  return errors
+}
+
+const isValid = computed(() => validate(state.value).length === 0)
 </script>
 
 <template>
   <UModal v-model="open" prevent-close class="custom-modal" :ui="{ width: 'w-full md:max-w-fit' }">
-    <div class="device-tile">
+    <UForm :validate="validate" :state="state" class="device-tile" @submit="saveAndEndEditing">
       <div class="info">
         <div class="device">
           <IdBadge :device="device" />
-          <UCheckbox v-model="editData.ready" label="Einsatzbereit" />
+          <UCheckbox v-model="state.ready" label="Einsatzbereit" />
         </div>
 
         <div>{{ device.deviceId }}</div>
         <div class="small">Code: {{ device.security || "?" }}</div>
-        <UInput v-model="editData.firmware" placeholder="Firmware version" class="input" />
-        <UInput v-model="editData.flash" placeholder="Flash version" class="input" />
+        <UInput v-model="state.firmware" placeholder="Firmware version" class="input" />
+        <UInput v-model="state.flash" placeholder="Flash version" class="input" />
       </div>
-      <UTextarea v-model="editData.comments" placeholder="Zusätzliche Informationen" class="comment" />
-      <DeviceRentals :rentals="device.rentals" class="history" />
+      <UTextarea v-model="state.comments" placeholder="Zusätzliche Informationen" class="comment" />
+      <DeviceRentals :rentals="device.rentals" class="history" v-model:returnDate="returnDate" />
 
       <div class="buttons">
+        <UButton v-if="!device.currentUserId && device.ready" variant="outline">Verleihen</UButton>
+
         <UButton variant="outline" @click.stop="endEditing">Abbrechen</UButton>
-        <UButton @click.stop="saveAndEndEditing">Speichern</UButton>
+        <UButton type="submit" :disabled="!isValid">Speichern</UButton>
       </div>
-    </div>
+    </UForm>
   </UModal>
 </template>
 
