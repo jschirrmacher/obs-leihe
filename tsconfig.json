@@ -4,5 +4,6 @@
   "compilerOptions": {
     "module": "ESNext",
     "target": "ESNext"
-  }
+  },
+  "exclude": ["eslint.config.js"]
 }

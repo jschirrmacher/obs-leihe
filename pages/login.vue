@@ -26,13 +26,13 @@ const headers = { "Content-Type": "application/json" }
 
 async function sendCredentials() {
   try {
-    const { data }: any = await useFetch("/api/auth/login", { method, headers, body: { ...state } })
-    if (data.value) {
+    const data = await $fetch("/api/auth/login", { method, headers, body: { ...state } })
+    if (data.token) {
       const token = useCookie("token")
-      token.value = data.value?.token
+      token.value = data.token
       router.replace("/")
     } else {
-      console.error(data.value)
+      console.error(data)
       throw new Error("Die Login-Funktion hat ein unerwartetes Ergebnis geliefert")
     }
   } catch (error) {

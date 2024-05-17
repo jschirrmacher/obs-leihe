@@ -3,15 +3,24 @@ import type { OBSDevice } from "~/types"
 
 const devices = useState<OBSDevice[]>("devices")
 const selectedDeviceId = ref<string>()
+
+const token = useCookie("token")
+if (token.value) {
+  const devices = useState<OBSDevice[]>("devices")
+  try {
+    const Authorization = `Bearer ${token.value}`
+    const { data: loadedDevices } = await useFetch<OBSDevice[]>("/api/devices", { headers: { Authorization } })
+    devices.value = loadedDevices.value || []
+  } catch (error) {
+    console.error(error)
+    throw new Error("Lesen der gespeicherten Daten fehlgeschlagen")
+  }
+}
 </script>
 
 <template>
-  <div class="device-list">
-    <UCard
-      v-for="device in devices"
-      :key="device.id"
-      @click="selectedDeviceId = device.id"
-    >
+  <div class="device-list" v-if="token">
+    <UCard v-for="device in devices" :key="device.id" @click="selectedDeviceId = device.id">
       <EditableDeviceTile
         v-if="device.id === selectedDeviceId"
         :device="device"
