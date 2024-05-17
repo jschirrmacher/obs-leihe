@@ -25,8 +25,10 @@
     "vue-router": "^4.3.2"
   },
   "devDependencies": {
+    "@nuxt/test-utils": "3.13.1",
     "@types/jsonwebtoken": "9.0.6",
     "@vitest/coverage-v8": "1.6.0",
+    "@vue/test-utils": "2.4.6",
     "@vuepic/vue-datepicker": "8.7.0",
     "jsonwebtoken": "9.0.2",
     "prettier": "3.2.5",

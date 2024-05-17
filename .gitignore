@@ -25,3 +25,4 @@ logs
 
 /config.yaml
 /coverage
+/test-results

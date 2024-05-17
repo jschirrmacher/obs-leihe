@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ["@nuxt/eslint", "@nuxt/ui"],
+  modules: ["@nuxt/eslint", "@nuxt/ui", "@nuxt/test-utils/module"],
   typescript: {
     typeCheck: true,
   },
@@ -19,6 +19,6 @@ export default defineNuxtConfig({
     },
   },
   build: {
-    transpile: ["jsonwebtoken", "@vuepic/vue-datepicker"],
+    transpile: ["jsonwebtoken", "@vuepic/vue-datepicker", "@nuxt/test-utils/module"],
   },
 })
