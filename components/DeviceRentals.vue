@@ -1,34 +1,39 @@
 <script setup lang="ts">
-import type { Rental } from "~/types"
-import DatePicker from "@vuepic/vue-datepicker"
-import "@vuepic/vue-datepicker/dist/main.css"
+import type { OBSDevice } from "~/types"
+import { getISODateString } from "~/lib/DateUtils";
 
-const props = defineProps<{ rentals: Rental[] }>()
+const props = defineProps<{ device: OBSDevice }>()
 const returnDate = defineModel<Date>("returnDate")
+const newRentalUserId = defineModel<string>("newRentalUserId", { default: "" })
+const newRentalFrom = defineModel<Date>("newRentalFrom", { default: new Date() })
 
 const columns = [
+  { key: "userId", label: "Fahrer:in" },
   { key: "from", label: "Von" },
   { key: "to", label: "Bis" },
-  { key: "userId", label: "Fahrer" },
 ]
 
-const rentals = computed(() =>
-  props.rentals.map((rental) => ({
-    from: new Date(rental.from).toLocaleDateString(),
-    to: rental.to ? new Date(rental.to).toLocaleDateString() : "",
+const rentals = computed(() => {
+  const rentals = props.device.rentals.map((rental) => ({
+    from: getISODateString(rental.from),
+    to: getISODateString(rental.to!),
     userId: rental.userId,
-  })),
-)
+    isNew: false,
+  }))
+  if (!props.device.rentals.some((rental) => rental.to === undefined)) {
+    rentals.push({
+      userId: newRentalUserId.value,
+      from: getISODateString(newRentalFrom.value!),
+      to: "",
+      isNew: true,
+    })
+  }
+  return rentals
+})
 
 function returnDevice() {
   returnDate.value = new Date()
 }
-
-function formatDate(date: Date) {
-  return date.toLocaleDateString()
-}
-
-const locale = navigator.language
 </script>
 
 <template>
@@ -39,20 +44,27 @@ const locale = navigator.language
       </div>
     </template>
 
-    <template #to-data="{ row }">
-      <span v-if="row.to === ''">{{ row.to }}</span>
+    <template #userId-data="{ row }">
+      <UInput v-if="row.isNew" v-model="newRentalUserId" class="user-id" />
+      <span v-else>{{ row.userId }}</span>
+    </template>
 
-      <UButton v-if="!returnDate && row.to === ''" size="xs" @click="returnDevice">Rückgabe</UButton>
-      <DatePicker
-        v-if="returnDate && row.to === ''"
-        v-model="returnDate"
-        :enable-time-picker="false"
-        :locale="locale"
-        :format="formatDate"
-        select-text="Ok"
-        cancel-text="Abbrechen"
-        :teleport="true"
-      />
+    <template #from-data="{ row }">
+      <DatePicker v-if="row.isNew" v-model="newRentalFrom" />
+      <span v-else>{{ row.from }}</span>
+    </template>
+
+    <template #to-data="{ row }">
+      <span v-if="row.to === '' && !row.isNew">{{ row.to }}</span>
+
+      <UButton v-if="!returnDate && row.to === '' && !row.isNew" size="xs" @click="returnDevice">Rückgabe</UButton>
+      <DatePicker v-if="returnDate && row.to === '' && !row.isNew" v-model="returnDate" />
     </template>
   </UTable>
 </template>
+
+<style scoped>
+.user-id {
+  width: 100px;
+}
+</style>

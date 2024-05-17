@@ -26,7 +26,7 @@ if (token.value) {
       <DeviceDialog
         v-if="device.id === selectedDeviceId"
         :device="device"
-        @unselect="selectedDeviceId = undefined"
+        @close="selectedDeviceId = undefined"
       />
       <DeviceTile :device="device" />
     </UCard>

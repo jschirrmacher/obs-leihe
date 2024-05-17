@@ -19,3 +19,7 @@ export function parseLocaleDateString(dateString: string, locale: string): strin
       return [part3, part2, part1].join("-")
   }
 }
+
+export function getISODateString(date: Date | string | undefined) {
+  return date && new Date(date).toISOString().split("T").at(0) || ""
+}

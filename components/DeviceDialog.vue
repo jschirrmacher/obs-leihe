@@ -1,20 +1,18 @@
 <script setup lang="ts">
+import { getISODateString } from "~/lib/DateUtils"
 import type { OBSDevice } from "~/types"
 
 const props = defineProps<{ device: OBSDevice }>()
-const emit = defineEmits(["unselect"])
+const emit = defineEmits(["close"])
+
+type State = ReturnType<typeof getInitialValues>
 
 const devices = useState<OBSDevice[]>("devices")
-
-type State = {
-  firmware: string
-  flash: string
-  comments: string
-  ready: boolean
-  returnDate: string
-}
 const state = ref<State>(getInitialValues())
 const returnDate = ref<Date>()
+const newRentalUserId = ref<string>()
+const newRentalFrom = ref<Date>()
+const open = ref(true)
 
 function getInitialValues() {
   return {
@@ -26,41 +24,38 @@ function getInitialValues() {
   }
 }
 
-onMounted(() => (state.value = getInitialValues()))
-watch(
-  () => props.device,
-  () => (state.value = getInitialValues()),
-)
+function reset() {
+  state.value = getInitialValues()
+  newRentalUserId.value = undefined
+  newRentalFrom.value = new Date()
+}
+
+onMounted(reset)
+watch(() => props.device, reset)
 
 function endEditing() {
-  state.value = getInitialValues()
-  emit("unselect")
+  reset()
+  emit("close")
 }
 
 async function saveAndEndEditing() {
-  state.value.returnDate = returnDate.value?.toISOString().split("T").at(0) || ""
-  const body = JSON.stringify(state.value)
-  const result = await $fetch<OBSDevice>("/api/devices/" + props.device.id, { method: "PATCH", body })
-  devices.value = devices.value.map((d) => (d.id === result.id ? result : d))
+  if (newRentalUserId.value && newRentalFrom.value) {
+    const body = JSON.stringify({ userId: newRentalUserId.value, from: getISODateString(newRentalFrom.value) })
+    const result = await $fetch<OBSDevice>("/api/devices/" + props.device.id + "/rentals", { method: "POST", body })
+    devices.value = devices.value.map((d) => (d.id === result.id ? result : d))
+  } else {
+    state.value.returnDate = getISODateString(returnDate.value!)
+    const body = JSON.stringify(state.value)
+    const result = await $fetch<OBSDevice>("/api/devices/" + props.device.id, { method: "PATCH", body })
+    devices.value = devices.value.map((d) => (d.id === result.id ? result : d))
+  }
   endEditing()
 }
-
-const open = ref(true)
-
-const validate = () => {
-  const errors = []
-  if (returnDate.value && Number.isNaN(returnDate.value.getTime())) {
-    errors.push({ path: "returnDate", message: "Falsche Datumsangabe" })
-  }
-  return errors
-}
-
-const isValid = computed(() => validate().length === 0)
 </script>
 
 <template>
   <UModal v-model="open" prevent-close class="custom-modal" :ui="{ width: 'w-full md:max-w-fit' }">
-    <UForm :validate="validate" :state="state" class="device-tile" @submit="saveAndEndEditing">
+    <UForm :state="state" class="device-tile" @submit="saveAndEndEditing">
       <div class="info">
         <div class="device">
           <IdBadge :device="device" />
@@ -72,14 +67,21 @@ const isValid = computed(() => validate().length === 0)
         <UInput v-model="state.firmware" placeholder="Firmware version" class="input" />
         <UInput v-model="state.flash" placeholder="Flash version" class="input" />
       </div>
+
       <UTextarea v-model="state.comments" placeholder="Zusätzliche Informationen" class="comment" />
-      <DeviceRentals v-model:returnDate="returnDate" :rentals="device.rentals" class="history" />
+
+      <div class="history">
+        <DeviceRentals
+          v-model:returnDate="returnDate"
+          v-model:new-rental-user-id="newRentalUserId"
+          v-model:new-rental-from="newRentalFrom"
+          :device="device"
+        />
+      </div>
 
       <div class="buttons">
-        <UButton v-if="!device.currentUserId && device.ready" variant="outline">Verleihen</UButton>
-
         <UButton variant="outline" @click.stop="endEditing">Abbrechen</UButton>
-        <UButton type="submit" :disabled="!isValid">Speichern</UButton>
+        <UButton type="submit">Speichern</UButton>
       </div>
     </UForm>
   </UModal>
@@ -106,7 +108,6 @@ const isValid = computed(() => validate().length === 0)
 }
 .comment {
   grid-area: comment;
-  margin-top: 1rem;
 }
 textarea {
   width: 100%;
@@ -115,5 +116,8 @@ textarea {
 }
 .input {
   margin-bottom: 3px;
+}
+.history {
+  grid-area: history;
 }
 </style>
