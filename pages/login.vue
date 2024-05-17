@@ -44,7 +44,7 @@ async function sendCredentials() {
 
 <template>
   <UForm :schema="schema" :state="state" @submit="sendCredentials">
-    <UCard>
+    <UCard class="w-96 mx-auto shadow-xl">
       <template #header> Gib deine Zugangsdaten an, um dich einzuloggen</template>
 
       <UFormGroup label="Benutzername" name="username">

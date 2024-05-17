@@ -38,17 +38,20 @@ function endEditing() {
   emit("close")
 }
 
-async function saveAndEndEditing() {
+function saveData(): { url: string; method: "POST" | "PATCH"; body: BodyInit } {
   if (newRentalUserId.value && newRentalFrom.value) {
     const body = JSON.stringify({ userId: newRentalUserId.value, from: getISODateString(newRentalFrom.value) })
-    const result = await $fetch<OBSDevice>("/api/devices/" + props.device.id + "/rentals", { method: "POST", body })
-    devices.value = devices.value.map((d) => (d.id === result.id ? result : d))
+    return { url: "/rentals", method: "POST", body }
   } else {
     state.value.returnDate = getISODateString(returnDate.value!)
-    const body = JSON.stringify(state.value)
-    const result = await $fetch<OBSDevice>("/api/devices/" + props.device.id, { method: "PATCH", body })
-    devices.value = devices.value.map((d) => (d.id === result.id ? result : d))
+    return { url: "", method: "PATCH", body: JSON.stringify(state.value) }
   }
+}
+
+async function saveAndEndEditing() {
+  const { url, method, body } = saveData()
+  const result = await $fetch<OBSDevice>("/api/devices/" + props.device.id + url, { method, body })
+  devices.value = devices.value.map((d) => (d.id === result.id ? result : d))
   endEditing()
 }
 </script>

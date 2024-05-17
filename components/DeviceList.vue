@@ -22,7 +22,7 @@ if (token.value) {
 
 <template>
   <div v-if="token" class="device-list">
-    <UCard v-for="device in devices" :key="device.id" @click="selectedDeviceId = device.id">
+    <UCard v-for="device in devices" :key="device.id" @click="selectedDeviceId = device.id" class="shadow-lg">
       <DeviceDialog
         v-if="device.id === selectedDeviceId"
         :device="device"
