@@ -1,14 +1,8 @@
-<script setup lang="ts">
-</script>
-
 <template>
   <UContainer>
     <UCard class="mt-10">
       <template #header>
-        <div class="flex justify-between">
-          <h1>OBS Leihe</h1>
-          <ColorScheme><USelect v-model="$colorMode.preference" :options="['system', 'light', 'dark']" /></ColorScheme>
-        </div>
+        <MainHeader />
       </template>
 
       <NuxtPage />
@@ -17,9 +11,3 @@
 
   <UNotifications />
 </template>
-
-<style scoped>
-h1 {
-  font-size: 24px;
-}
-</style>

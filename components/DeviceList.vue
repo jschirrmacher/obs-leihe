@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import type { OBSDevice } from "~/types"
+import { useCookie, useFetch, useState } from "nuxt/app"
+import type { OBSDevice } from "../types"
+import { ref } from "vue"
 
 const devices = useState<OBSDevice[]>("devices")
 const selectedDeviceId = ref<string>()
