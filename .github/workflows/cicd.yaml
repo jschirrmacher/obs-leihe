@@ -57,7 +57,7 @@ jobs:
         run: npm run test:coverage
 
       - name: "Report Coverage"
-        if: always() # Also generate the report if tests are failing
+        if: ${{ hashFiles('coverage/') != '' }}
         uses: davelosert/vitest-coverage-report-action@v2
 
   deploy-to-docker:
