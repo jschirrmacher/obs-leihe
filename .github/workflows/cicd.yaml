@@ -21,15 +21,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Build software
+        run: npx nuxt build
+
       - name: Cache node modules
-        uses: actions/cache@v4
-        env:
-          cache-name: cache-node-modules
+        uses: actions/cache/save@v4
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
+          path: |
+            ~/.npm
+            ~/.output
+          key: ${{ runner.os }}-cache-artifacts-${{ hashFiles('**/package-lock.json', '.output/**/*') }}
 
   unit-tests:
     runs-on: ubuntu-latest
@@ -50,8 +51,13 @@ jobs:
         with:
           node-version-file: ".node-version"
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Restore cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ~/.npm
+            ~/.output
+          key: ${{ runner.os }}-cache-artifacts-${{ hashFiles('**/package-lock.json', '.output/**/*') }}
 
       - name: Run unit tests
         run: npm run test:coverage
@@ -89,8 +95,13 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build software
-        run: npx nuxt build
+      - name: Restore cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ~/.npm
+            ~/.output
+          key: ${{ runner.os }}-cache-artifacts-${{ hashFiles('**/package-lock.json', '.output/**/*') }}
 
       - name: Build and push docker image
         uses: docker/build-push-action@v4
