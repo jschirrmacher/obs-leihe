@@ -1,6 +1,6 @@
 FROM node:lts-alpine
 
-RUN mkdir -p /app/.output && chown -R 1000 /app
+RUN mkdir -p /app && chown 1000 /app
 USER 1000
 WORKDIR /app
 COPY .output /app/.output
