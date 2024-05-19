@@ -78,6 +78,8 @@ jobs:
         with:
           name: nuxt-output
 
+      - run: ls -laR
+
       - name: Docker meta
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v5
