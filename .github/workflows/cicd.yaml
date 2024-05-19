@@ -100,13 +100,15 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Restore cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache@v4
         with:
           path: |
             ~/.npm
             ~/.output
           key: ${{ runner.os }}-cache-artifacts-${{ hashFiles('**/package-lock.json', '.output/**/*') }}
-
+          restore-keys: |
+            ${{ runner.os }}-cache-artifacts-
+  
       - name: Build and push docker image
         uses: docker/build-push-action@v4
         with:
