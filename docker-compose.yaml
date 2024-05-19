@@ -1,5 +1,6 @@
 services:
   obs-leihe:
+    image: joschi64/obs-leihe
     build:
       context: .
       dockerfile: Dockerfile

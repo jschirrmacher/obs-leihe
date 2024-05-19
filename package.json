@@ -7,8 +7,11 @@
     "build": "nuxt build",
     "docker:build": "docker compose build",
     "docker:run": "docker compose up",
+    "test": "echo 'no tests defined yet'",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
+    "config": "tsx scripts/config.ts",
+    "update": "npx -y npm-check-updates -d -u -e 2",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
@@ -26,7 +29,6 @@
     "useful-typescript-functions": "4.2.0",
     "vue-tsc": "1.8.27",
     "yamljs": "0.3.0",
-    "yup": "1.4.0",
-    "zod": "3.23.8"
+    "yup": "1.4.0"
   }
 }
