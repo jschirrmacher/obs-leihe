@@ -17,21 +17,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: ".node-version"
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Build software
-        run: npx nuxt build
-
-      - name: Cache node modules and generated code
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.npm
-            ~/.output
-          key: ${{ runner.os }}-cache-artifacts
-          restore-keys: ${{ runner.os }}-cache-artifacts
 
   unit-tests:
     runs-on: ubuntu-latest
@@ -51,35 +40,43 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: ".node-version"
+          cache: 'npm'
 
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.npm
-            ~/.output
-          key: ${{ runner.os }}-cache-artifacts
-          restore-keys: ${{ runner.os }}-cache-artifacts
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run unit tests
         run: npm run test:coverage
 
-      - name: "Report Coverage"
+      - name: Report Coverage
         if: ${{ hashFiles('coverage/') != '' }}
         uses: davelosert/vitest-coverage-report-action@v2
+
+      - name: Build software
+        run: npx nuxt build
+      
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuxt-output
+          path: .output
 
   deploy-to-docker:
     runs-on: ubuntu-latest
     needs:
       - setup
       - unit-tests
-      # - cypress-run
     steps:
       - name: Install curl
         run: sudo apt-get install -y curl openssl
 
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Download generated files
+        uses: actions/download-artifact@v4
+        with:
+          name: nuxt-output
 
       - name: Docker meta
         id: docker_meta
@@ -96,15 +93,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.npm
-            ~/.output
-          key: ${{ runner.os }}-cache-artifacts
-          restore-keys: ${{ runner.os }}-cache-artifacts
   
       - name: Build and push docker image
         uses: docker/build-push-action@v4
