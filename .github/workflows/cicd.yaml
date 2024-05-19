@@ -77,8 +77,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: nuxt-output
+          path: .output
 
-      - run: ls -laR
+      - run: ls -laR .output
 
       - name: Docker meta
         id: docker_meta
@@ -97,7 +98,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
   
       - name: Build and push docker image
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
