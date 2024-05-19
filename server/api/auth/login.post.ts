@@ -2,15 +2,7 @@ import { createError, eventHandler, readBody } from "h3"
 import { sign } from "jsonwebtoken"
 import { comparePassword } from "../../lib/Authentication"
 import { getJwtSecret } from "~/server/lib/Configuration"
-
-type Role = "user" | "admin"
-
-type User = {
-  username: string
-  name: string
-  roles: Role[]
-  password?: string
-}
+import type { User } from "~/types"
 
 const storage = useStorage("data")
 

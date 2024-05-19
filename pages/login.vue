@@ -56,7 +56,7 @@ async function sendCredentials() {
       </UFormGroup>
 
       <template #footer>
-        <UButton type="submit"> Submit </UButton>
+        <UButton type="submit"> Einloggen </UButton>
       </template>
     </UCard>
   </UForm>

@@ -1,3 +1,4 @@
+
 export type OBSDevice = {
   id: string
   deviceId: string
@@ -14,4 +15,13 @@ export type Rental = {
   userId: string
   from: Date
   to?: Date
+}
+
+export type Role = "user" | "admin"
+
+export type User = {
+  username: string
+  name: string
+  roles: Role[]
+  password?: string
 }

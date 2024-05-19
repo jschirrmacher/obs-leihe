@@ -6,6 +6,10 @@ function setTheme(theme: string) {
   useColorMode().preference = theme
 }
 
+function profile() {
+  router.push("/chgpwd")
+}
+
 function logout() {
   token.value = undefined
   router.push("/login")
@@ -30,6 +34,11 @@ const items = [
     },
   ],
   [
+    {
+      label: "Passwort ändern",
+      icon: "i-heroicons-user",
+      click: profile,
+    },
     {
       label: "Logout",
       icon: "i-heroicons-arrow-right-start-on-rectangle",

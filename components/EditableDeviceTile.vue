@@ -85,14 +85,6 @@ textarea {
   height: 5rem;
   padding: 3px;
 }
-.buttons {
-  display: flex;
-  flex-direction: col;
-  gap: 5px;
-  padding-top: 2rem;
-  justify-self: right;
-  grid-area: buttons;
-}
 .input {
   margin-bottom: 3px;
 }
