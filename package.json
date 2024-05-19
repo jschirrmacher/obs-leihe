@@ -8,6 +8,7 @@
     "docker:build": "docker compose build",
     "docker:run": "docker compose up",
     "test": "echo 'no tests defined yet'",
+    "test:coverage": "echo 'no tests defined yet'",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "config": "tsx scripts/config.ts",
