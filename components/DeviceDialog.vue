@@ -38,7 +38,7 @@ const open = ref(true)
       <div class="info">
         <div class="device">
           <IdBadge :device="device" />
-          <UCheckbox v-model="editData.faulty" label="Nicht einsatzbereit" />
+          <UCheckbox v-model="editData.ready" label="Einsatzbereit" />
         </div>
 
         {{ device.deviceId }}<br />

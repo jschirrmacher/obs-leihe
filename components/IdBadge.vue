@@ -4,7 +4,7 @@ import type { OBSDevice } from "~/types"
 const props = defineProps<{ device: OBSDevice }>()
 
 const color = computed(() => {
-  if (props.device.faulty) {
+  if (!props.device.ready) {
     return "red"
   } else if (props.device.currentUserId !== "") {
     return "amber"

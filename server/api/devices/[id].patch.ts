@@ -3,7 +3,7 @@ import { getMutation } from "useful-typescript-functions"
 
 type OBSDeviceFields = (keyof OBSDevice)[]
 
-const writableFields: OBSDeviceFields = ["comments", "firmware", "flash", "faulty"]
+const writableFields: OBSDeviceFields = ["comments", "firmware", "flash", "ready"]
 const storage = useStorage("data")
 const openRental = (rental: Rental) => rental.to === undefined
 

@@ -23,7 +23,7 @@ if (token.value) {
 <template>
   <div class="device-list" v-if="token">
     <UCard v-for="device in devices" :key="device.id" @click="selectedDeviceId = device.id">
-      <EditableDeviceTile
+      <DeviceDialog
         v-if="device.id === selectedDeviceId"
         :device="device"
         @unselect="selectedDeviceId = undefined"

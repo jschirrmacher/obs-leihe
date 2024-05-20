@@ -1,4 +1,3 @@
-
 export type OBSDevice = {
   id: string
   deviceId: string
@@ -8,7 +7,12 @@ export type OBSDevice = {
   comments: string
   rentals: Rental[]
   currentUserId: string
-  faulty: boolean
+  ready: boolean
+
+  /**
+   * @deprecated
+   */
+  faulty?: boolean
 }
 
 export type Rental = {
