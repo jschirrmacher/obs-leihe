@@ -9,15 +9,20 @@ Manage all your devices and where they currently are.
 ### Usage with docker
 
 The easiest was to use this is to run it in a [docker environment](https://www.docker.com/).
-You can take the pre-built docker image `joschi64/obs-leihe` and run it like this:
+You can copy the `config-template.yaml` to `config.yaml`, adapt the JWT token secret in this file to something random, take the pre-built docker image `joschi64/obs-leihe` and run it like this:
 
 ```bash
-docker run joschi64/obs-leihe
+docker run -v ./.data:/app/.data -v ./config.yaml:/app/config.yaml joschi64/obs-leihe
 ```
 
 ### Create docker image yourself
 
-To build the image on your machine, you need to install a current [Node.js runtime environment](https://nodejs.org/en/) (if you don't have it yet) and use these commands:
+To build the image on your machine, you need to install (if you don't have them yet)
+
+- a current [Git command line tool](https://git-scm.com/downloads)
+- a current [Node.js runtime environment](https://nodejs.org/en/)
+
+and use these commands:
 
 ```bash
 git clone git@github.com:jschirrmacher/obs-leihe.git
@@ -25,12 +30,12 @@ cd obs-leihe
 npm install
 npm run config
 npm run build
-docker compose up
+docker build .
 ```
 
 ### Development environment
 
-For this, you also need to install a current [Node.js runtime environment](https://nodejs.org/en/) (if you don't have it yet).
+For this, you also need to install a current [Git command line tool](https://git-scm.com/downloads) and a Node.js runtime environment](https://nodejs.org/en/) like above.
 After cloning the repository, install dependencies, setup configuration and run the development server:
 
 ```bash
