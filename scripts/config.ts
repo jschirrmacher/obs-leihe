@@ -2,14 +2,14 @@ import { mkdirSync, existsSync, writeFileSync } from "node:fs"
 import { createInterface, moveCursor, clearLine } from "node:readline"
 import { scryptSync, randomBytes } from "crypto"
 
-function keypressHandler(c: any) {
-  if (c.charCodeAt() === 127) {
+function keypressHandler(c: string) {
+  if (c.charCodeAt(0) === 127) {
     const len = rl.line.length
     moveCursor(process.stdout, -len, 0)
     clearLine(process.stdout, 1)
     process.stdout.write("*".repeat(len))
     return
-  } else if (["\n", "\r"].includes(c.charCodeAt())) {
+  } else if (["\n", "\r"].includes(c)) {
     process.stdin.removeListener("data", keypressHandler)
   } else {
     moveCursor(process.stdout, -1, 0)

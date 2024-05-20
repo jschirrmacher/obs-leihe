@@ -41,16 +41,16 @@ const open = ref(true)
           <UCheckbox v-model="editData.ready" label="Einsatzbereit" />
         </div>
 
-        {{ device.deviceId }}<br />
+        <div>{{ device.deviceId }}</div>
         <div class="small">Code: {{ device.security || "?" }}</div>
         <UInput v-model="editData.firmware" placeholder="Firmware version" class="input" />
         <UInput v-model="editData.flash" placeholder="Flash version" class="input" />
       </div>
-      <UTextarea v-model="editData.comments" placeholder="Zusätzliche Informationen" class="comment"> </UTextarea>
+      <UTextarea v-model="editData.comments" placeholder="Zusätzliche Informationen" class="comment" />
       <DeviceRentals :rentals="device.rentals" class="history" />
 
       <div class="buttons">
-        <UButton @click.stop="endEditing" variant="outline">Abbrechen</UButton>
+        <UButton variant="outline" @click.stop="endEditing">Abbrechen</UButton>
         <UButton @click.stop="saveAndEndEditing">Speichern</UButton>
       </div>
     </div>

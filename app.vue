@@ -10,9 +10,9 @@
       <UAvatar src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" />
       Repository
     </UButton>
-    <UButton to="https://github.com/jschirrmacher/obs-leihe/issues/new" target="_blank" variant="link"
-      >Fehler melden</UButton
-    >
+    <UButton to="https://github.com/jschirrmacher/obs-leihe/issues/new" target="_blank" variant="link">
+      Fehler melden
+    </UButton>
   </UContainer>
 
   <UNotifications />

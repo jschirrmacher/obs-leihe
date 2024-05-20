@@ -61,7 +61,7 @@ const items = [
           <UIcon :name="item.icon" />
           &nbsp;
           <span class="item-text">{{ item.label }}</span>
-          <UIcon name="i-heroicons-check" v-if="selected(item)"></UIcon>
+          <UIcon v-if="selected(item)" name="i-heroicons-check" />
         </div>
       </template>
     </UDropdown>

@@ -24,6 +24,8 @@ export default defineEventHandler((event) => {
   if (token) {
     try {
       event.context.auth = decode(token)
-    } catch {}
+    } catch {
+      // ignore errors while decoding, just keeping the auth context undefined
+    }
   }
 })

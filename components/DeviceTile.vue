@@ -12,7 +12,7 @@ defineProps<{ device: OBSDevice }>()
     </div>
 
     <div class="tech-info">
-      {{ device.deviceId }}<br />
+      <div>{{ device.deviceId }}</div>
       <div class="small">Code: {{ device.security || "?" }}</div>
       <div class="small">Firmware: {{ device.firmware || "?" }}</div>
       <div class="small">Flash: {{ device.flash || "?" }}</div>

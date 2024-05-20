@@ -7,7 +7,7 @@
     "build": "nuxt build",
     "docker:build": "docker compose build",
     "docker:run": "docker compose up",
-    "test": "npm run build",
+    "test": "npm run eslint . && npm run build",
     "test:coverage": "npm run test",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
