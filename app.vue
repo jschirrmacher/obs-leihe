@@ -1,13 +1,12 @@
 <template>
-  <UContainer>
-    <UCard class="mt-10">
-      <template #header>
-        <MainHeader />
-      </template>
-
-      <NuxtPage />
-    </UCard>
+  <UContainer class="mt-4">
+    <MainHeader />
   </UContainer>
+  <UContainer class="mt-4">
+    <NuxtPage />
+  </UContainer>
+
+  <NuxtPage />
 
   <UNotifications />
 </template>
