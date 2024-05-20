@@ -38,7 +38,7 @@ const open = ref(true)
       <div class="info">
         <div class="device">
           <IdBadge :device="device" />
-          <UCheckbox v-model="editData.faulty" label="Defekt" />
+          <UCheckbox v-model="editData.faulty" label="Nicht einsatzbereit" />
         </div>
 
         {{ device.deviceId }}<br />
@@ -50,7 +50,7 @@ const open = ref(true)
       <DeviceRentals :rentals="device.rentals" class="history" />
 
       <div class="buttons">
-        <UButton @click.stop="endEditing">Abbrechen</UButton>
+        <UButton @click.stop="endEditing" variant="outline">Abbrechen</UButton>
         <UButton @click.stop="saveAndEndEditing">Speichern</UButton>
       </div>
     </div>

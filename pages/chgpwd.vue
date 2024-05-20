@@ -52,7 +52,7 @@ async function updateData() {
 
       <template #footer>
         <div class="buttons">
-          <UButton @click="router.push('/')"> Abbrechen </UButton>
+          <UButton variant="outline" @click="router.push('/')"> Abbrechen </UButton>
           <UButton type="submit"> Speichern </UButton>
         </div>
       </template>
