@@ -1,5 +1,5 @@
-import { verifyToken } from "../lib/Authentication"
 import type { H3Event } from "h3"
+import { decode } from "jsonwebtoken"
 
 type GetTokenFn = (event: H3Event) => string | undefined
 
@@ -19,5 +19,11 @@ export default defineEventHandler((event) => {
     .map((strategy) => strategy(event))
     .filter((t) => t)
     .at(0)
-  event.context.auth = token && verifyToken(token)
+
+  event.context.auth = undefined
+  if (token) {
+    try {
+      event.context.auth = decode(token)
+    } catch {}
+  }
 })

@@ -1,6 +1,4 @@
 import { scryptSync, randomBytes, timingSafeEqual } from "crypto"
-import { verify } from "jsonwebtoken"
-import { getJwtSecret } from "~/server/lib/Configuration"
 import type { H3Event } from "h3"
 
 export function hashPassword(password: string) {
@@ -14,14 +12,6 @@ export async function comparePassword(storedPassword: string, suppliedPassword: 
   const hashedPasswordBuf = Buffer.from(hashedPassword, "hex")
   const suppliedPasswordBuf = scryptSync(suppliedPassword, salt, 64) as Buffer
   return timingSafeEqual(hashedPasswordBuf, suppliedPasswordBuf)
-}
-
-export function verifyToken(token: string) {
-  try {
-    return verify(token, getJwtSecret())
-  } catch {
-    return undefined
-  }
 }
 
 export function assertLoggedIn(event: H3Event) {
