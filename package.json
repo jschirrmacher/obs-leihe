@@ -14,7 +14,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "config": "tsx scripts/config.ts",
-    "update": "npx -y npm-check-updates -d -u -e 2",
+    "update": "npx -y npm-check-updates -d -u -e 2 -t minor",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
