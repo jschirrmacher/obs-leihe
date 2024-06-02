@@ -33,7 +33,7 @@
     "@vuepic/vue-datepicker": "8.7.0",
     "jsonwebtoken": "9.0.2",
     "playwright": "1.44.1",
-    "prettier": "3.2.5",
+    "prettier": "3.3.0",
     "typescript": "5.4.5",
     "useful-typescript-functions": "4.2.0",
     "vitest": "1.6.0",
