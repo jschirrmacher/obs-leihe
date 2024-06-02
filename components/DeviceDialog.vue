@@ -54,6 +54,12 @@ async function saveAndEndEditing() {
   devices.value = devices.value.map((d) => (d.id === result.id ? result : d))
   endEditing()
 }
+
+async function remove() {
+  const result = await $fetch<{ removed: boolean }>("/api/devices/" + props.device.id, { method: "DELETE" })
+  devices.value = devices.value.filter(d => d.id !== props.device.id)
+  endEditing()
+}
 </script>
 
 <template>
@@ -83,6 +89,7 @@ async function saveAndEndEditing() {
       </div>
 
       <div class="buttons">
+        <UButton variant="solid" color="red" class="remove" @click.stop="remove">Löschen</UButton>
         <UButton variant="outline" @click.stop="endEditing">Abbrechen</UButton>
         <UButton type="submit">Speichern</UButton>
       </div>
@@ -122,5 +129,9 @@ textarea {
 }
 .history {
   grid-area: history;
+  margin-top: -0.5rem;
+}
+.remove {
+  margin-right: auto;
 }
 </style>

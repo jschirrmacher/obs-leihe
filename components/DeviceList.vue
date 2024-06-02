@@ -18,16 +18,14 @@ if (token.value) {
     throw new Error("Lesen der gespeicherten Daten fehlgeschlagen")
   }
 }
+
+const ui = { body: { padding: "px-2 py-2 sm:p-3" } }
 </script>
 
 <template>
   <div v-if="token" class="device-list">
-    <UCard v-for="device in devices" :key="device.id" class="shadow-lg" @click="selectedDeviceId = device.id">
-      <DeviceDialog
-        v-if="device.id === selectedDeviceId"
-        :device="device"
-        @close="selectedDeviceId = undefined"
-      />
+    <UCard v-for="device in devices" :key="device.id" class="shadow-lg" @click="selectedDeviceId = device.id" :ui="ui">
+      <DeviceDialog v-if="device.id === selectedDeviceId" :device="device" @close="selectedDeviceId = undefined" />
       <DeviceTile :device="device" />
     </UCard>
   </div>
@@ -44,13 +42,13 @@ if (token.value) {
   cursor: pointer;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1024px) {
   .device-list > div {
     width: calc(100% / 2 - 8px);
   }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 512px) {
   .device-list > div {
     width: 100%;
   }

@@ -36,12 +36,12 @@ defineProps<{ device: OBSDevice }>()
   margin: 0 0 0.5rem 0.5rem;
   padding: 0.5rem;
   border: 1px solid lightgray;
+  text-wrap: nowrap;
 }
 .small {
   font-size: 80%;
 }
 .comment {
   grid-area: comment;
-  margin-top: 1rem;
 }
 </style>

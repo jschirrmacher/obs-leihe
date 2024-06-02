@@ -24,8 +24,9 @@
   flex-direction: row;
   justify-content: right;
   gap: 5px;
-  padding-top: 2rem;
+  padding-top: 1rem;
   justify-self: right;
   grid-area: buttons;
+  width: 100%;
 }
 </style>
