@@ -56,8 +56,8 @@ async function saveAndEndEditing() {
 }
 
 async function remove() {
-  const result = await $fetch<{ removed: boolean }>("/api/devices/" + props.device.id, { method: "DELETE" })
-  devices.value = devices.value.filter(d => d.id !== props.device.id)
+  const result = await $fetch<{ id: string }>("/api/devices/" + props.device.id, { method: "DELETE" })
+  devices.value = devices.value.filter((d) => d.id !== result.id)
   endEditing()
 }
 </script>

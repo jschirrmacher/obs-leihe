@@ -24,7 +24,7 @@ const ui = { body: { padding: "px-2 py-2 sm:p-3" } }
 
 <template>
   <div v-if="token" class="device-list">
-    <UCard v-for="device in devices" :key="device.id" class="shadow-lg" @click="selectedDeviceId = device.id" :ui="ui">
+    <UCard v-for="device in devices" :key="device.id" class="shadow-lg" :ui="ui" @click="selectedDeviceId = device.id">
       <DeviceDialog v-if="device.id === selectedDeviceId" :device="device" @close="selectedDeviceId = undefined" />
       <DeviceTile :device="device" />
     </UCard>

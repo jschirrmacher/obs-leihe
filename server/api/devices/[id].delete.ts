@@ -9,9 +9,8 @@ export default defineEventHandler(async (event) => {
   if (index === -1) {
     throw new Error("Device not found")
   }
-  delete devices[index]
 
-  await storage.setItem("devices", Object.values(devices))
+  await storage.setItem("devices", Object.values(devices.filter((device) => device.id !== id)))
 
-  return { removed: true }
+  return { id }
 })
