@@ -19,6 +19,12 @@ if (token.value) {
   }
 }
 
+const deviceDialogOpen = ref(false)
+
+function newDevice() {
+  deviceDialogOpen.value = true
+}
+
 const ui = { body: { padding: "px-2 py-2 sm:p-3" } }
 </script>
 
@@ -29,6 +35,12 @@ const ui = { body: { padding: "px-2 py-2 sm:p-3" } }
       <DeviceTile :device="device" />
     </UCard>
   </div>
+
+  <div class="buttons">
+    <UButton @click="newDevice">Neuen OBS anlegen</UButton>
+  </div>
+
+  <NewDeviceDialog v-if="deviceDialogOpen" @close="deviceDialogOpen = false" />
 </template>
 
 <style>

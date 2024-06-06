@@ -48,7 +48,7 @@ function saveData(): { url: string; method: "POST" | "PATCH"; body: BodyInit } {
   }
 }
 
-async function saveAndEndEditing() {
+async function save() {
   const { url, method, body } = saveData()
   const result = await $fetch<OBSDevice>("/api/devices/" + props.device.id + url, { method, body })
   devices.value = devices.value.map((d) => (d.id === result.id ? result : d))
@@ -64,7 +64,7 @@ async function remove() {
 
 <template>
   <UModal v-model="open" prevent-close class="custom-modal" :ui="{ width: 'w-full md:max-w-fit' }">
-    <UForm :state="state" class="device-tile" @submit="saveAndEndEditing">
+    <UForm :state="state" class="device-tile" @submit="save">
       <div class="info">
         <div class="device">
           <IdBadge :device="device" />
@@ -133,5 +133,8 @@ textarea {
 }
 .remove {
   margin-right: auto;
+}
+.buttons {
+  grid-area: buttons;
 }
 </style>
