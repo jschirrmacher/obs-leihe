@@ -3,7 +3,7 @@ import { getMutation } from "useful-typescript-functions"
 
 type OBSDeviceFields = (keyof OBSDevice)[]
 
-const writableFields: OBSDeviceFields = ["comments", "firmware", "flash", "ready"]
+const writableFields: OBSDeviceFields = ["deviceId", "security", "comments", "firmware", "flash", "ready"]
 const storage = useStorage("data")
 const openRental = (rental: Rental) => rental.to === undefined
 
@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
   const devices = (await storage.getItem("devices")) as OBSDevice[]
   const device = devices.find((device) => device.id === id)
   if (!device) {
-    throw new Error("Device not found")
+    throw createError({ statusCode: 404, statusMessage: "Device not found"})
   }
 
   const change = (await readBody(event)) as Partial<OBSDevice> & { returnDate?: string }

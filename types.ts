@@ -8,11 +8,6 @@ export type OBSDevice = {
   rentals: Rental[]
   currentUserId: string
   ready: boolean
-
-  /**
-   * @deprecated
-   */
-  faulty?: boolean
 }
 
 export type Rental = {

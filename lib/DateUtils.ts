@@ -37,3 +37,10 @@ export function parseLocaleDateString(dateString: string, locale: string) {
 export function getISODateString(date: Date | string | number | undefined) {
   return (date && new Date(date).toISOString().split("T").at(0)) || ""
 }
+
+export function getDateFromString(location: string, str?: string) {
+  if (!str || !str.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    throw new Error(`Missing date or invalid date format in ${location} (must be ISO 8601 date)`)
+  }
+  return new Date(str)
+}

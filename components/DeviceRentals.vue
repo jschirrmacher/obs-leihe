@@ -5,7 +5,7 @@ import { getISODateString } from "~/lib/DateUtils";
 const props = defineProps<{ device: OBSDevice }>()
 const returnDate = defineModel<Date>("returnDate")
 const newRentalUserId = defineModel<string>("newRentalUserId", { default: "" })
-const newRentalFrom = defineModel<Date>("newRentalFrom", { default: new Date() })
+const newRentalFrom = defineModel<Date>("newRentalFrom")
 
 const columns = [
   { key: "userId", label: "Fahrer:in" },
@@ -16,7 +16,7 @@ const columns = [
 const rentals = computed(() => {
   const rentals = props.device.rentals.map((rental) => ({
     from: getISODateString(rental.from),
-    to: getISODateString(rental.to!),
+    to: getISODateString(rental.to),
     userId: rental.userId,
     isNew: false,
   }))

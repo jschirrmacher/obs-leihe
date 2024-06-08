@@ -1,33 +1,34 @@
 <script setup lang="ts">
-import { getISODateString } from "~/lib/DateUtils"
+import { useDeviceStore } from "~/composables/DevicesStore"
 import type { OBSDevice } from "~/types"
 
-const props = defineProps<{ device: OBSDevice }>()
+const props = defineProps<{ device?: OBSDevice }>()
 const emit = defineEmits(["close"])
 
 type State = ReturnType<typeof getInitialValues>
 
-const devices = useState<OBSDevice[]>("devices")
+const { createDevice, createNewRental, endRental, removeDevice, updateDevice } = useDeviceStore()
 const state = ref<State>(getInitialValues())
-const returnDate = ref<Date>()
-const newRentalUserId = ref<string>()
-const newRentalFrom = ref<Date>()
 const open = ref(true)
+const messages = useMessages()
 
 function getInitialValues() {
   return {
-    firmware: props.device.firmware,
-    flash: props.device.flash,
-    comments: props.device.comments,
-    ready: props.device.ready,
-    returnDate: "",
+    id: props.device?.id || "",
+    deviceId: props.device?.deviceId || "",
+    security: props.device?.security || "",
+    firmware: props.device?.firmware || "",
+    flash: props.device?.flash || "",
+    comments: props.device?.comments || "",
+    ready: props.device?.ready === true,
+    newRentalUserId: "",
+    newRentalFrom: new Date(),
+    returnDate: undefined as Date | undefined,
   }
 }
 
 function reset() {
   state.value = getInitialValues()
-  newRentalUserId.value = undefined
-  newRentalFrom.value = new Date()
 }
 
 onMounted(reset)
@@ -38,26 +39,31 @@ function endEditing() {
   emit("close")
 }
 
-function saveData(): { url: string; method: "POST" | "PATCH"; body: BodyInit } {
-  if (newRentalUserId.value && newRentalFrom.value) {
-    const body = JSON.stringify({ userId: newRentalUserId.value, from: getISODateString(newRentalFrom.value) })
-    return { url: "/rentals", method: "POST", body }
-  } else {
-    state.value.returnDate = getISODateString(returnDate.value!)
-    return { url: "", method: "PATCH", body: JSON.stringify(state.value) }
+async function save() {
+  try {
+    if (props.device === undefined) {
+      await createDevice(state.value)
+    } else {
+      if (state.value.newRentalUserId && state.value.newRentalFrom) {
+        await createNewRental(state.value.id, state.value.newRentalUserId, state.value.newRentalFrom)
+        state.value.newRentalUserId = ""
+        state.value.newRentalFrom = new Date()
+      } else if (state.value.returnDate) {
+        await endRental(state.value.id, state.value.returnDate)
+        state.value.returnDate = undefined
+      }
+      await updateDevice(state.value)
+    }
+
+    messages.info("Daten wurden gespeichert")
+    endEditing()
+  } catch (error) {
+    messages.error(error)
   }
 }
 
-async function save() {
-  const { url, method, body } = saveData()
-  const result = await $fetch<OBSDevice>("/api/devices/" + props.device.id + url, { method, body })
-  devices.value = devices.value.map((d) => (d.id === result.id ? result : d))
-  endEditing()
-}
-
 async function remove() {
-  const result = await $fetch<{ id: string }>("/api/devices/" + props.device.id, { method: "DELETE" })
-  devices.value = devices.value.filter((d) => d.id !== result.id)
+  await removeDevice(state.value.id)
   endEditing()
 }
 </script>
@@ -65,31 +71,33 @@ async function remove() {
 <template>
   <UModal v-model="open" prevent-close class="custom-modal" :ui="{ width: 'w-full md:max-w-fit' }">
     <UForm :state="state" class="device-tile" @submit="save">
-      <div class="info">
-        <div class="device">
-          <IdBadge :device="device" />
-          <UCheckbox v-model="state.ready" label="Einsatzbereit" />
-        </div>
+      <div class="left">
+        <IdBadge v-if="device" :device="device" class="device" />
+        <UInput v-else v-model="state.id" placeholder="Eigene Kennung" />
+        <UInput v-model="state.security" placeholder="Code" />
+        <UInput v-model="state.deviceId" placeholder="Geräte-ID" />
+      </div>
 
-        <div>{{ device.deviceId }}</div>
-        <div class="small">Code: {{ device.security || "?" }}</div>
-        <UInput v-model="state.firmware" placeholder="Firmware version" class="input" />
-        <UInput v-model="state.flash" placeholder="Flash version" class="input" />
+      <div class="right">
+        <UCheckbox v-model="state.ready" label="Einsatzbereit" />
+        <UInput v-model="state.firmware" placeholder="Firmware version" />
+        <UInput v-model="state.flash" placeholder="Flash version" />
       </div>
 
       <UTextarea v-model="state.comments" placeholder="Zusätzliche Informationen" class="comment" />
 
       <div class="history">
         <DeviceRentals
-          v-model:returnDate="returnDate"
-          v-model:new-rental-user-id="newRentalUserId"
-          v-model:new-rental-from="newRentalFrom"
+          v-if="device"
+          v-model:returnDate="state.returnDate"
+          v-model:new-rental-user-id="state.newRentalUserId"
+          v-model:new-rental-from="state.newRentalFrom"
           :device="device"
         />
       </div>
 
       <div class="buttons">
-        <UButton variant="solid" color="red" class="remove" @click.stop="remove">Löschen</UButton>
+        <UButton v-if="device" variant="solid" color="red" class="remove" @click.stop="remove">Löschen</UButton>
         <UButton variant="outline" @click.stop="endEditing">Abbrechen</UButton>
         <UButton type="submit">Speichern</UButton>
       </div>
@@ -100,21 +108,35 @@ async function remove() {
 <style scoped>
 .device-tile {
   display: grid;
-  grid-template-columns: 200px 1fr;
-  grid-template-areas: "info history" "comment comment" "buttons buttons";
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "left right" "comment comment" "history history" "buttons buttons";
+  align-items: start;
   margin: 1rem;
   gap: 10px;
 }
-.device {
+
+@media screen and (min-width: 768px) {
+  .device-tile {
+    grid-template-columns: auto auto 1fr;
+    grid-template-areas: "left right history" "comment comment comment" "buttons buttons buttons";
+  }
+}
+.left {
+  grid-area: left;
+}
+.right {
+  grid-area: right;
+}
+.history {
+  grid-area: history;
+}
+.left,
+.right,
+.history {
   display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-.info {
-  grid-area: info;
-}
-.small {
-  font-size: 80%;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.5rem;
 }
 .comment {
   grid-area: comment;
@@ -124,17 +146,10 @@ textarea {
   height: 5rem;
   padding: 3px;
 }
-.input {
-  margin-bottom: 3px;
-}
-.history {
-  grid-area: history;
-  margin-top: -0.5rem;
+.buttons {
+  grid-area: buttons;
 }
 .remove {
   margin-right: auto;
-}
-.buttons {
-  grid-area: buttons;
 }
 </style>
