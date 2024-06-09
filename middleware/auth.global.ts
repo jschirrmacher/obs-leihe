@@ -17,10 +17,10 @@ export default defineNuxtRouteMiddleware((to) => {
   const user = useState("user") as Ref<User>
   const token = useCookie("token")
   const auth = to.meta.auth as { unauthenticatedOnly: boolean; navigateAuthenticatedTo: string }
-  if (!auth?.unauthenticatedOnly && !token.value) {
-    return navigateTo("/login")
-  }
   if (!user.value && token.value) {
     loadUser(token.value)
+  }
+  if (!auth?.unauthenticatedOnly && !user.value) {
+    return navigateTo("/login")
   }
 })

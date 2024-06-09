@@ -23,7 +23,10 @@ export default defineEventHandler((event) => {
   event.context.auth = undefined
   if (token) {
     try {
-      event.context.auth = decode(token)
+      const decoded = decode(token) as { exp: number }
+      if (decoded.exp >= Date.now() / 1000) {
+        event.context.auth = decoded
+      }
     } catch {
       // ignore errors while decoding, just keeping the auth context undefined
     }
