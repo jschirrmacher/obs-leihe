@@ -62,7 +62,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: nuxt-output
-          path: .output
+          path: .output/
+          include-hidden-files: true
 
   deploy-to-docker:
     runs-on: ubuntu-latest
@@ -80,9 +81,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: nuxt-output
-          path: .output
-
-      - run: ls -laR .output
+          path: .output/
 
       - name: Docker meta
         id: docker_meta

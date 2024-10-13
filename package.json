@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "obs-leihe",
   "private": true,
   "type": "module",
   "scripts": {
@@ -15,7 +15,7 @@
     "preview": "nuxt preview",
     "config": "tsx scripts/config.ts",
     "update": "npx -y npm-check-updates -d -u -e 2 -t minor",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare && npx playwright install --with-deps"
   },
   "dependencies": {
     "@nuxt/eslint": "0.3.13",
