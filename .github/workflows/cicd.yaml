@@ -57,12 +57,17 @@ jobs:
 
       - name: Build software
         run: npx nuxt build
+      - run: pwd
+      - run: ls -la .output
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v4
         with:
           name: nuxt-output
           path: .output/
+
+      - run: pwd
+      - run: ls -la .output
 
   deploy-to-docker:
     runs-on: ubuntu-latest
