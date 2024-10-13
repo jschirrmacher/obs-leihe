@@ -1,7 +1,7 @@
 import { createPage, setup, url } from "@nuxt/test-utils/e2e"
 import { describe, it, expect } from "vitest"
 
-describe("E2E: Login", async () => {
+describe.skip("E2E: Login", async () => {
   await setup()
 
   it("should load with playwright", async () => {

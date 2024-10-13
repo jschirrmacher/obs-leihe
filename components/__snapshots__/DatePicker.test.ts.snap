@@ -5,7 +5,7 @@ exports[`DatePicker Component > should render as expected 1`] = `
   <div>
     <!---->
     <div class="dp__input_wrap">
-      <!----><input data-test="dp-input" class="dp__pointer dp__input_readonly dp__input dp__input_reg" inputmode="none" placeholder="" autocomplete="off" aria-label="Datepicker input">
+      <!----><input data-test="dp-input" class="dp__pointer dp__input_readonly dp__input dp__input_reg" inputmode="none" placeholder="" autocomplete="off" aria-label="Datepicker input" value="">
       <div>
         <!---->
         <!---->
