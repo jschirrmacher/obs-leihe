@@ -77,9 +77,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - run: pwd
-      - run: ls -la
-
       - name: Download generated files
         uses: actions/download-artifact@v4
         with:
