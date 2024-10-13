@@ -81,13 +81,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - run: pwd
+      - run: ls -la .output
+
       - name: Download generated files
         uses: actions/download-artifact@v4
         with:
           name: nuxt-output
           path: .output/
-
-      - run: ls -laR .output
 
       - name: Docker meta
         id: docker_meta
