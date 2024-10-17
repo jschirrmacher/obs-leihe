@@ -89,7 +89,7 @@ async function remove() {
       <div class="history">
         <DeviceRentals
           v-if="device"
-          v-model:returnDate="state.returnDate"
+          v-model:return-date="state.returnDate"
           v-model:new-rental-user-id="state.newRentalUserId"
           v-model:new-rental-from="state.newRentalFrom"
           :device="device"

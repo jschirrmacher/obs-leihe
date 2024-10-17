@@ -15,22 +15,22 @@ export const useDeviceStore = () => {
 
   return {
     async createDevice(device: EditableDeviceData) {
-      const result = await $fetch<OBSDevice>("/api/devices", { method: "POST", body: device })
+      const result: OBSDevice = await $fetch("/api/devices", { method: "POST", body: device })
       devices.value = [...devices.value, result]
     },
 
     async updateDevice(device: EditableDeviceData) {
-      const result = await $fetch<OBSDevice>(`/api/devices/${device.id}`, { method: "PATCH", body: device })
+      const result: OBSDevice = await $fetch(`/api/devices/${device.id}`, { method: "PATCH", body: device })
       updateDeviceInStore(result)
     },
-    
+
     async removeDevice(deviceId: string) {
-      const result = await $fetch<{ id: string }>("/api/devices/" + deviceId, { method: "DELETE" })
+      const result: { id: string } = await $fetch("/api/devices/" + deviceId, { method: "DELETE" })
       devices.value = devices.value.filter((d) => d.id !== result.id)
     },
-    
+
     async createNewRental(deviceId: string, userId: string, rentDate: Date) {
-      const result = await $fetch<OBSDevice>(`/api/devices/${deviceId}/rentals`, {
+      const result: OBSDevice = await $fetch(`/api/devices/${deviceId}/rentals`, {
         method: "POST",
         body: { userId, from: getISODateString(rentDate) },
       })
@@ -40,7 +40,7 @@ export const useDeviceStore = () => {
     async endRental(deviceId: string, returnDate: Date) {
       const device = devices.value.find((device) => device.id === deviceId)
       const from = getISODateString(device!.rentals.at(-1)?.from)
-      await $fetch<OBSDevice>(`/api/devices/${deviceId}/rentals/${from}`, {
+      await $fetch(`/api/devices/${deviceId}/rentals/${from}`, {
         method: "PATCH",
         body: { to: getISODateString(returnDate) },
       })
