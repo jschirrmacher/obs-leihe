@@ -39,7 +39,7 @@
     "typescript": "5.4.5",
     "useful-typescript-functions": "4.3.0",
     "vitest": "2.1.8",
-    "vue-tsc": "^2.1.10",
+    "vue-tsc": "^2.2.0",
     "yamljs": "0.3.0",
     "yup": "1.6.1"
   }
