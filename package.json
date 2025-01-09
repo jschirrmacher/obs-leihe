@@ -36,7 +36,7 @@
     "jsonwebtoken": "9.0.2",
     "playwright": "1.49.1",
     "prettier": "3.4.2",
-    "typescript": "5.7.2",
+    "typescript": "5.7.3",
     "useful-typescript-functions": "4.3.0",
     "vitest": "2.1.8",
     "vue-tsc": "^2.2.0",
