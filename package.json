@@ -25,14 +25,14 @@
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "@nuxt/test-utils": "3.15.3",
+    "@nuxt/test-utils": "3.15.4",
     "@playwright/test": "1.49.1",
     "@types/jsonwebtoken": "9.0.7",
     "@types/node": "22.10.5",
     "@vitest/coverage-v8": "2.1.8",
     "@vue/test-utils": "2.4.6",
     "@vuepic/vue-datepicker": "9.0.3",
-    "happy-dom": "15.11.7",
+    "happy-dom": "16.5.3",
     "jsonwebtoken": "9.0.2",
     "playwright": "1.49.1",
     "prettier": "3.4.2",
