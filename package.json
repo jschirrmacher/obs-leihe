@@ -32,7 +32,7 @@
     "@vitest/coverage-v8": "2.1.8",
     "@vue/test-utils": "2.4.6",
     "@vuepic/vue-datepicker": "9.0.3",
-    "happy-dom": "16.5.3",
+    "happy-dom": "16.6.0",
     "jsonwebtoken": "9.0.2",
     "playwright": "1.49.1",
     "prettier": "3.4.2",
