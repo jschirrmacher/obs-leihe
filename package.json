@@ -29,7 +29,7 @@
     "@playwright/test": "1.49.1",
     "@types/jsonwebtoken": "9.0.7",
     "@types/node": "22.10.7",
-    "@vitest/coverage-v8": "2.1.8",
+    "@vitest/coverage-v8": "3.0.4",
     "@vue/test-utils": "2.4.6",
     "@vuepic/vue-datepicker": "9.0.3",
     "happy-dom": "16.6.0",
@@ -38,7 +38,7 @@
     "prettier": "3.4.2",
     "typescript": "5.7.3",
     "useful-typescript-functions": "4.3.0",
-    "vitest": "2.1.8",
+    "vitest": "3.0.4",
     "vue-tsc": "^2.2.0",
     "yamljs": "0.3.0",
     "yup": "1.6.1"
