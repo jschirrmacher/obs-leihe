@@ -5,9 +5,7 @@ interface SecretsConfiguration {
   jwtSecret: string
 }
 
-interface PublicConfiguration {
-  //
-}
+type PublicConfiguration = object
 
 type Configuration = PublicConfiguration & {
   secrets?: SecretsConfiguration
