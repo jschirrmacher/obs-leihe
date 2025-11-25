@@ -1,9 +1,9 @@
 import type { H3Event } from "h3"
-import { decode } from "jsonwebtoken"
+import { verifyJWT } from "../lib/Authentication"
 
 type GetTokenFn = (event: H3Event) => string | undefined
 
-export default defineEventHandler((event) => {
+export default defineEventHandler(async (event) => {
   if (!event.path.match(/^\/api/)) {
     return
   }
@@ -23,10 +23,7 @@ export default defineEventHandler((event) => {
   event.context.auth = undefined
   if (token) {
     try {
-      const decoded = decode(token) as { exp: number }
-      if (decoded.exp >= Date.now() / 1000) {
-        event.context.auth = decoded
-      }
+      event.context.auth = await verifyJWT(token)
     } catch {
       // ignore errors while decoding, just keeping the auth context undefined
     }

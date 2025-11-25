@@ -14,7 +14,7 @@ const hash = "#prevent-scroll"
 
 const selected = computed({
   get: () => Math.max(0, items.findIndex(predicate)),
-  set: (value) => router.replace({ query: { tab: items[value].id }, hash }),
+  set: (value) => router.replace({ query: { tab: items[value]?.id }, hash }),
 })
 </script>
 

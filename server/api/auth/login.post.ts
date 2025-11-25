@@ -1,7 +1,5 @@
 import { createError, eventHandler, readBody } from "h3"
-import { sign } from "jsonwebtoken"
-import { comparePassword } from "../../lib/Authentication"
-import { getJwtSecret } from "~/server/lib/Configuration"
+import { comparePassword, signJWT } from "../../lib/Authentication"
 import type { User } from "~/types"
 
 const storage = useStorage("data")
@@ -17,11 +15,10 @@ export default eventHandler(async (event) => {
     throw createError({ statusCode: 403, statusText: "Unauthorized" })
   }
 
-  const expiresIn = 90_000
   const user = { ...candidate }
   delete user.password
 
-  const token = sign(user, getJwtSecret(), { expiresIn })
+  const token = await signJWT(user)
 
   return { token }
 })
