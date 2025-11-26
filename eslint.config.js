@@ -2,7 +2,16 @@
 import withNuxt from "./.nuxt/eslint.config.mjs"
 
 export default withNuxt(
-  // Your custom configs here
+  {
+    ignores: [
+      "node_modules/**",
+      ".nuxt/**",
+      ".output/**",
+      "dist/**",
+      ".data/**",
+      "coverage/**"
+    ]
+  },
   {
     rules: {
       "import/no-duplicates": "off",

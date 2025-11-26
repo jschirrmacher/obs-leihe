@@ -22,8 +22,23 @@ export default defineNuxtConfig({
       routes: ['/'],
       crawlLinks: false,
     },
+    minify: true,
+  },
+  vite: {
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['vue', 'vue-router'],
+          },
+        },
+      },
+    },
   },
   build: {
     transpile: ["@vuepic/vue-datepicker", "@nuxt/test-utils/module"],
+  },
+  experimental: {
+    payloadExtraction: false,
   },
 })
